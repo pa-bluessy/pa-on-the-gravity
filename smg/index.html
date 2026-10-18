@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a0c">
+<title>Gravity企画用・セックスマシンガンズ特集・YouTube再生数ランキング（たたき台）</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg2: #141418;
+    --card: #1a1a22;
+    --border: #2e2e3a;
+    --text: #f0ece6;
+    --muted: #9a958c;
+    --accent: #e8b84a;
+    --metal: #c0c8d4;
+    --adopt: #2ecc71;
+    --hold: #f1c40f;
+    --reject: #e74c3c;
+    --adopt-bg: rgba(46,204,113,.18);
+    --hold-bg: rgba(241,196,15,.18);
+    --reject-bg: rgba(231,76,60,.18);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-top: env(safe-area-inset-top, 0px);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    font-size: 16px;
+    line-height: 1.45;
+    min-height: 100%;
+  }
+  body {
+    padding: calc(12px + var(--safe-top)) 12px calc(100px + var(--safe-bottom));
+    background:
+      radial-gradient(ellipse at top, #1a1210 0%, transparent 55%),
+      linear-gradient(180deg, #0c0c10 0%, #0a0a0c 100%);
+  }
+  header {
+    margin-bottom: 14px;
+    padding: 14px 14px 16px;
+    background: linear-gradient(135deg, #1c1410 0%, #12121a 60%, #0e1016 100%);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 0 0 1px rgba(232,184,74,.08), 0 8px 24px rgba(0,0,0,.45);
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: .02em;
+    color: var(--accent);
+    text-shadow: 0 0 18px rgba(232,184,74,.25);
+  }
+  header .sub {
+    margin: 0;
+    font-size: .78rem;
+    color: var(--muted);
+  }
+  header .sub strong { color: var(--metal); font-weight: 600; }
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin: 0 -12px 12px;
+    padding: 10px 12px;
+    background: rgba(10,10,12,.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .summary {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .chip {
+    flex: 1 1 30%;
+    min-width: 90px;
+    text-align: center;
+    padding: 10px 8px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-size: .85rem;
+    font-weight: 700;
+  }
+  .chip span { display: block; font-size: 1.35rem; line-height: 1.2; }
+  .chip.adopt { border-color: rgba(46,204,113,.45); color: var(--adopt); background: var(--adopt-bg); }
+  .chip.hold { border-color: rgba(241,196,15,.45); color: var(--hold); background: var(--hold-bg); }
+  .chip.reject { border-color: rgba(231,76,60,.45); color: var(--reject); background: var(--reject-bg); }
+  .chip.unset { color: var(--muted); }
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+  .actions button {
+    flex: 1;
+    min-height: 48px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    color: var(--text);
+    font-size: .9rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .actions button:active { transform: scale(.98); opacity: .9; }
+  .actions .export-btn {
+    background: linear-gradient(180deg, #2a2418, #1a1610);
+    border-color: rgba(232,184,74,.4);
+    color: var(--accent);
+  }
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  .row {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    transition: border-color .15s, background .15s;
+  }
+  .row[data-decision="adopt"] { border-color: rgba(46,204,113,.55); background: linear-gradient(90deg, var(--adopt-bg), var(--card) 40%); }
+  .row[data-decision="hold"] { border-color: rgba(241,196,15,.55); background: linear-gradient(90deg, var(--hold-bg), var(--card) 40%); }
+  .row[data-decision="reject"] { border-color: rgba(231,76,60,.45); background: linear-gradient(90deg, var(--reject-bg), var(--card) 40%); opacity: .78; }
+  .row-top {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .rank {
+    flex: 0 0 36px;
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: #0e0e14;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    color: var(--accent);
+    font-size: .95rem;
+  }
+  .meta { flex: 1; min-width: 0; }
+  .title-link {
+    display: block;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.02rem;
+    word-break: break-word;
+    padding: 2px 0;
+  }
+  .title-link:active, .title-link:hover { color: var(--accent); }
+  .title-link.disabled {
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .views {
+    margin-top: 4px;
+    font-size: .82rem;
+    color: var(--metal);
+    font-variant-numeric: tabular-nums;
+  }
+  .note {
+    margin-top: 3px;
+    font-size: .72rem;
+    color: var(--muted);
+  }
+  .btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .btns button {
+    min-height: 52px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: #121218;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .12s, border-color .12s, color .12s;
+  }
+  .btns button:active { transform: scale(.97); }
+  .btns button[data-v="adopt"].on,
+  .btns button[data-v="adopt"]:active { background: var(--adopt); border-color: var(--adopt); color: #06210f; }
+  .btns button[data-v="hold"].on,
+  .btns button[data-v="hold"]:active { background: var(--hold); border-color: var(--hold); color: #2a2200; }
+  .btns button[data-v="reject"].on,
+  .btns button[data-v="reject"]:active { background: var(--reject); border-color: var(--reject); color: #fff; }
+  .btns button[data-v="adopt"] { color: var(--adopt); }
+  .btns button[data-v="hold"] { color: var(--hold); }
+  .btns button[data-v="reject"] { color: #ff8a7a; }
+
+  /* Export modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.72);
+    z-index: 100;
+    padding: 16px;
+    padding-bottom: calc(16px + var(--safe-bottom));
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    width: 100%;
+    max-width: 560px;
+    max-height: 80vh;
+    background: #16161e;
+    border: 1px solid var(--border);
+    border-radius: 16px 16px 12px 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .modal h2 { margin: 0; font-size: 1rem; color: var(--accent); }
+  .modal textarea {
+    width: 100%;
+    min-height: 220px;
+    flex: 1;
+    background: #0c0c12;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: .8rem;
+    font-family: ui-monospace, Menlo, monospace;
+    resize: vertical;
+  }
+  .modal-actions { display: flex; gap: 8px; }
+  .modal-actions button {
+    flex: 1;
+    min-height: 48px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    font-weight: 700;
+    font-family: inherit;
+    font-size: .95rem;
+    cursor: pointer;
+  }
+  .modal-actions .copy { background: var(--accent); color: #1a1200; border-color: var(--accent); }
+  .modal-actions .close { background: var(--bg2); color: var(--text); }
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(24px + var(--safe-bottom));
+    transform: translateX(-50%) translateY(20px);
+    background: #222;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-size: .9rem;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s;
+    z-index: 200;
+    border: 1px solid var(--border);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  footer {
+    margin-top: 18px;
+    padding: 12px;
+    font-size: .72rem;
+    color: var(--muted);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Gravity企画用・セックスマシンガンズ特集・YouTube再生数ランキング（たたき台）</h1>
+  <p class="sub">
+    データ取得：<strong>2026-09-25（JST）</strong>／yt-dlp による YouTube 再生数スナップショット。<br>
+    再生数は時点の近似値です。同一曲の複数動画がある場合は再生数の多いものを優先（公式寄りを微優遇）。非公式アップロードは注記あり。
+  </p>
+</header>
+
+<div class="toolbar">
+  <div class="summary">
+    <div class="chip adopt">採用<span id="c-adopt">0</span></div>
+    <div class="chip hold">保留<span id="c-hold">0</span></div>
+    <div class="chip reject">却下<span id="c-reject">0</span></div>
+    <div class="chip unset">未選択<span id="c-unset">0</span></div>
+  </div>
+  <div class="actions">
+    <button type="button" class="export-btn" id="btn-export">選択リストを書き出し</button>
+    <button type="button" id="btn-reset">判定をリセット</button>
+  </div>
+</div>
+
+<div class="list" id="list"></div>
+
+<footer>
+  SEX MACHINEGUNS / セックス・マシンガンズ — Gravity SNS 企画たたき台<br>
+  本ページはオフラインで動作します（判定は端末の localStorage に保存）。
+</footer>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h2>選択リスト書き出し</h2>
+    <div class="actions" style="margin:0">
+      <button type="button" id="fmt-json" style="min-height:44px">JSON</button>
+      <button type="button" id="fmt-text" style="min-height:44px">テキスト要約</button>
+    </div>
+    <textarea id="export-out" readonly></textarea>
+    <div class="modal-actions">
+      <button type="button" class="copy" id="btn-copy">コピー</button>
+      <button type="button" class="close" id="btn-close">閉じる</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const TRACKS = [{"rank": 1, "title": "みかんのうた", "youtubeUrl": "https://www.youtube.com/watch?v=CrfLL8ail3o", "videoId": "CrfLL8ail3o", "viewCount": 4282279, "note": "非公式アップロード（mushroom0metalhead）", "verified": true, "channel": "mushroom0metalhead"}, {"rank": 2, "title": "出前道一直線", "youtubeUrl": "https://www.youtube.com/watch?v=dvCmxbUZzoI", "videoId": "dvCmxbUZzoI", "viewCount": 1634413, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 3, "title": "TEKKEN II", "youtubeUrl": "https://www.youtube.com/watch?v=wpHbw_zUGFs", "videoId": "wpHbw_zUGFs", "viewCount": 1320333, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 4, "title": "森のくまさん", "youtubeUrl": "https://www.youtube.com/watch?v=DQQJNHw1xqA", "videoId": "DQQJNHw1xqA", "viewCount": 1134173, "note": "非公式アップロード（MetalSoul）", "verified": true, "channel": "MetalSoul"}, {"rank": 5, "title": "愛人28", "youtubeUrl": "https://www.youtube.com/watch?v=O-HKqN3WM54", "videoId": "O-HKqN3WM54", "viewCount": 1060075, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 6, "title": "ONIGUNSOW", "youtubeUrl": "https://www.youtube.com/watch?v=IumLNgU76w4", "videoId": "IumLNgU76w4", "viewCount": 1030265, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 7, "title": "メタル経理マン", "youtubeUrl": "https://www.youtube.com/watch?v=6ZWhMzQ6Diw", "videoId": "6ZWhMzQ6Diw", "viewCount": 956678, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 8, "title": "世直しGOOD VIBRATION", "youtubeUrl": "https://www.youtube.com/watch?v=g_a-L-D8PaM", "videoId": "g_a-L-D8PaM", "viewCount": 825549, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 9, "title": "愛こそすべて", "youtubeUrl": "https://www.youtube.com/watch?v=YiDBzm42JHY", "videoId": "YiDBzm42JHY", "viewCount": 623905, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 10, "title": "桜島", "youtubeUrl": "https://www.youtube.com/watch?v=H0kWdGKwVQs", "videoId": "H0kWdGKwVQs", "viewCount": 621924, "note": "非公式アップロード（hellman03）", "verified": true, "channel": "hellman03"}, {"rank": 11, "title": "プライド", "youtubeUrl": "https://www.youtube.com/watch?v=g6k31ghsBWM", "videoId": "g6k31ghsBWM", "viewCount": 618679, "note": "非公式アップロード（MARSAarchives）", "verified": true, "channel": "MARSAarchives"}, {"rank": 12, "title": "仕事人", "youtubeUrl": "https://www.youtube.com/watch?v=pbMUFeKu5tk", "videoId": "pbMUFeKu5tk", "viewCount": 562317, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 13, "title": "BURN～愛の炎を燃やせ～", "youtubeUrl": "https://www.youtube.com/watch?v=1rCNXhkwlV0", "videoId": "1rCNXhkwlV0", "viewCount": 556689, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 14, "title": "ファミレス・ボンバー", "youtubeUrl": "https://www.youtube.com/watch?v=u9kp5xgpfY8", "videoId": "u9kp5xgpfY8", "viewCount": 528563, "note": "非公式アップロード（manami honjyo）", "verified": true, "channel": "manami honjyo"}, {"rank": 15, "title": "サスペンス劇場", "youtubeUrl": "https://www.youtube.com/watch?v=--PBnQzC6Ng", "videoId": "--PBnQzC6Ng", "viewCount": 514520, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 16, "title": "食べたいなめたい危険地帯", "youtubeUrl": "https://www.youtube.com/watch?v=VhZbq3KJaao", "videoId": "VhZbq3KJaao", "viewCount": 499092, "note": "非公式アップロード（Aleksei Kapranov）", "verified": true, "channel": "Aleksei Kapranov"}, {"rank": 17, "title": "人妻キラー", "youtubeUrl": "https://www.youtube.com/watch?v=Ng4cV0eHOjk", "videoId": "Ng4cV0eHOjk", "viewCount": 487601, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 18, "title": "HANABI-la大回転", "youtubeUrl": "https://www.youtube.com/watch?v=_KYj_UxR9ys", "videoId": "_KYj_UxR9ys", "viewCount": 452428, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 19, "title": "Katare! Namida!", "youtubeUrl": "https://www.youtube.com/watch?v=jD4kPPEIRX8", "videoId": "jD4kPPEIRX8", "viewCount": 409166, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 20, "title": "メタルベンチャーマン", "youtubeUrl": "https://www.youtube.com/watch?v=0mYRAGeZqxw", "videoId": "0mYRAGeZqxw", "viewCount": 405391, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 21, "title": "メタルタックスマン", "youtubeUrl": "https://www.youtube.com/watch?v=y2XUsfgu7zo", "videoId": "y2XUsfgu7zo", "viewCount": 361100, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 22, "title": "暴走ロック", "youtubeUrl": "https://www.youtube.com/watch?v=SUETlfOb9Nk", "videoId": "SUETlfOb9Nk", "viewCount": 327691, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 23, "title": "燃えろ!!ジャパメタ", "youtubeUrl": "https://www.youtube.com/watch?v=540tV4iY-GM", "videoId": "540tV4iY-GM", "viewCount": 315662, "note": "非公式アップロード（AnchorRecordsJapan）", "verified": true, "channel": "AnchorRecordsJapan"}, {"rank": 24, "title": "そこに、あなたが・・・・・", "youtubeUrl": "https://www.youtube.com/watch?v=8nGSCq2Xh8g", "videoId": "8nGSCq2Xh8g", "viewCount": 298785, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 25, "title": "ハイウェイスター", "youtubeUrl": "https://www.youtube.com/watch?v=7swOYPqdk3U", "videoId": "7swOYPqdk3U", "viewCount": 290020, "note": "非公式アップロード（AnchorRecordsJapan）", "verified": true, "channel": "AnchorRecordsJapan"}, {"rank": 26, "title": "S.H.R.～セクシーヒーローレヴォリューション～", "youtubeUrl": "https://www.youtube.com/watch?v=IFr3U7ZvYKs", "videoId": "IFr3U7ZvYKs", "viewCount": 270709, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 27, "title": "廃品回収", "youtubeUrl": "https://www.youtube.com/watch?v=g-2pesNGq5U", "videoId": "g-2pesNGq5U", "viewCount": 252587, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 28, "title": "未練FIRE!", "youtubeUrl": "https://www.youtube.com/watch?v=b64K-KT7Oag", "videoId": "b64K-KT7Oag", "viewCount": 218941, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 29, "title": "エグイ食い込み", "youtubeUrl": "https://www.youtube.com/watch?v=U4INz3lrIds", "videoId": "U4INz3lrIds", "viewCount": 200698, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 30, "title": "illusion city", "youtubeUrl": "https://www.youtube.com/watch?v=jyGxF8yGqJQ", "videoId": "jyGxF8yGqJQ", "viewCount": 200626, "note": "非公式アップロード（maxbigwood）", "verified": true, "channel": "maxbigwood"}, {"rank": 31, "title": "HEAVY METAL THUNDER", "youtubeUrl": "https://www.youtube.com/watch?v=BaMavqjpTs0", "videoId": "BaMavqjpTs0", "viewCount": 172258, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 32, "title": "American Z", "youtubeUrl": "https://www.youtube.com/watch?v=C4dhsDtmdHw", "videoId": "C4dhsDtmdHw", "viewCount": 164267, "note": "非公式アップロード（KEI J-ROCK FEST）", "verified": true, "channel": "KEI J-ROCK FEST"}, {"rank": 33, "title": "ANACONDA", "youtubeUrl": "https://www.youtube.com/watch?v=WndBX1ZMxs8", "videoId": "WndBX1ZMxs8", "viewCount": 130736, "note": "非公式アップロード（ナタリー）", "verified": true, "channel": "ナタリー"}, {"rank": 34, "title": "震え", "youtubeUrl": "https://www.youtube.com/watch?v=R6PQYLFWVSk", "videoId": "R6PQYLFWVSk", "viewCount": 128811, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 35, "title": "毒マムシ", "youtubeUrl": "https://www.youtube.com/watch?v=I15E4wNLgtQ", "videoId": "I15E4wNLgtQ", "viewCount": 125008, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 36, "title": "SEX MACHINEGUN", "youtubeUrl": "https://www.youtube.com/watch?v=OVcZOVGAVWc", "videoId": "OVcZOVGAVWc", "viewCount": 105674, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 37, "title": "JUNK FOOD", "youtubeUrl": "https://www.youtube.com/watch?v=HAgFaWF_fvw", "videoId": "HAgFaWF_fvw", "viewCount": 98457, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 38, "title": "情熱の炎", "youtubeUrl": "https://www.youtube.com/watch?v=TQWyUziehAw", "videoId": "TQWyUziehAw", "viewCount": 97583, "note": "非公式アップロード（mushroom0metalhead）", "verified": true, "channel": "mushroom0metalhead"}, {"rank": 39, "title": "部屋とTシャツと親父", "youtubeUrl": "https://www.youtube.com/watch?v=_G34lwi5Ap8", "videoId": "_G34lwi5Ap8", "viewCount": 82709, "note": "非公式アップロード", "verified": true, "channel": "mushroom0metalhead"}, {"rank": 40, "title": "BURNING FIRE", "youtubeUrl": "https://www.youtube.com/watch?v=xHF-DuKXr60", "videoId": "xHF-DuKXr60", "viewCount": 82610, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 41, "title": "JACKY", "youtubeUrl": "https://www.youtube.com/watch?v=5AAAAjdxgEk", "videoId": "5AAAAjdxgEk", "viewCount": 69777, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 42, "title": "犬の生活", "youtubeUrl": "https://www.youtube.com/watch?v=l64RmeI8ALE", "videoId": "l64RmeI8ALE", "viewCount": 69558, "note": "非公式アップロード（Inu No Seikatsu）", "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 43, "title": "German Power", "youtubeUrl": "https://www.youtube.com/watch?v=KQgQo1mNYmE", "videoId": "KQgQo1mNYmE", "viewCount": 55953, "note": "非公式アップロード（VEGWG）", "verified": true, "channel": "VEGWG"}, {"rank": 44, "title": "雨の川崎", "youtubeUrl": "https://www.youtube.com/watch?v=bC3cnegw-ys", "videoId": "bC3cnegw-ys", "viewCount": 53008, "note": "非公式アップロード（mushroom0metalhead）", "verified": true, "channel": "mushroom0metalhead"}, {"rank": 45, "title": "FIRE", "youtubeUrl": "https://www.youtube.com/watch?v=7wDTdyssYS4", "videoId": "7wDTdyssYS4", "viewCount": 49618, "note": "非公式アップロード（SaebaRyoo）", "verified": true, "channel": "SaebaRyoo"}, {"rank": 46, "title": "ZERO AUDIO", "youtubeUrl": "https://www.youtube.com/watch?v=QkoriZ1ALTU", "videoId": "QkoriZ1ALTU", "viewCount": 46414, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 47, "title": "JAPAN", "youtubeUrl": "https://www.youtube.com/watch?v=ikQSJFSnKF4", "videoId": "ikQSJFSnKF4", "viewCount": 44618, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 48, "title": "暴走老人", "youtubeUrl": "https://www.youtube.com/watch?v=hqL0PVIDQWM", "videoId": "hqL0PVIDQWM", "viewCount": 44261, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 49, "title": "魚の気持ち", "youtubeUrl": "https://www.youtube.com/watch?v=Tx6nk1GwZi8", "videoId": "Tx6nk1GwZi8", "viewCount": 38898, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}, {"rank": 50, "title": "Panda Chan", "youtubeUrl": "https://www.youtube.com/watch?v=XuDxHKmHRDg", "videoId": "XuDxHKmHRDg", "viewCount": 32821, "note": null, "verified": true, "channel": "SEX MACHINEGUNS"}];
+const STORAGE_KEY = 'smg-gravity-ranking-decisions-v1';
+
+function loadDecisions() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {};
+  } catch (e) { return {}; }
+}
+function saveDecisions(d) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+}
+
+function formatViews(n) {
+  if (n == null || n === '') return '再生数不明';
+  const x = Number(n);
+  if (x >= 100000000) return (x/100000000).toFixed(2).replace(/\.?0+$/,'') + '億回';
+  if (x >= 10000) {
+    const man = x / 10000;
+    return (man >= 100 ? Math.round(man) : (Math.round(man * 10) / 10)) + '万回';
+  }
+  return x.toLocaleString('ja-JP') + '回';
+}
+
+function formatViewsExact(n) {
+  if (n == null) return '不明';
+  return Number(n).toLocaleString('ja-JP') + ' 回';
+}
+
+let decisions = loadDecisions();
+let exportFormat = 'json';
+
+function render() {
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  TRACKS.forEach(t => {
+    const id = t.videoId || ('no-' + t.rank);
+    const dec = decisions[id] || '';
+    const row = document.createElement('article');
+    row.className = 'row';
+    row.dataset.id = id;
+    row.dataset.decision = dec;
+    const hasUrl = !!t.youtubeUrl;
+    const note = t.note ? `<div class="note">${escapeHtml(t.note)}</div>` : '';
+    row.innerHTML = `
+      <div class="row-top">
+        <div class="rank">${t.rank}</div>
+        <div class="meta">
+          ${hasUrl
+            ? `<a class="title-link" href="${escapeAttr(t.youtubeUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t.title)}</a>`
+            : `<span class="title-link disabled">${escapeHtml(t.title)}</span>`}
+          <div class="views">${formatViews(t.viewCount)} <span style="opacity:.65">（${formatViewsExact(t.viewCount)}）</span></div>
+          ${note}
+        </div>
+      </div>
+      <div class="btns">
+        <button type="button" data-v="adopt" class="${dec==='adopt'?'on':''}">採用</button>
+        <button type="button" data-v="hold" class="${dec==='hold'?'on':''}">保留</button>
+        <button type="button" data-v="reject" class="${dec==='reject'?'on':''}">却下</button>
+      </div>`;
+    row.querySelectorAll('.btns button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const v = btn.dataset.v;
+        if (decisions[id] === v) delete decisions[id];
+        else decisions[id] = v;
+        saveDecisions(decisions);
+        render();
+      });
+    });
+    list.appendChild(row);
+  });
+  updateSummary();
+}
+
+function updateSummary() {
+  let a=0,h=0,r=0,u=0;
+  TRACKS.forEach(t => {
+    const id = t.videoId || ('no-' + t.rank);
+    const d = decisions[id];
+    if (d==='adopt') a++;
+    else if (d==='hold') h++;
+    else if (d==='reject') r++;
+    else u++;
+  });
+  document.getElementById('c-adopt').textContent = a;
+  document.getElementById('c-hold').textContent = h;
+  document.getElementById('c-reject').textContent = r;
+  document.getElementById('c-unset').textContent = u;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s) {
+  return escapeHtml(s);
+}
+
+function buildExport(fmt) {
+  const rows = TRACKS.map(t => {
+    const id = t.videoId || ('no-' + t.rank);
+    return {
+      rank: t.rank,
+      title: t.title,
+      youtubeUrl: t.youtubeUrl,
+      videoId: t.videoId,
+      viewCount: t.viewCount,
+      note: t.note || null,
+      decision: decisions[id] || null,
+      decisionLabel: ({adopt:'採用',hold:'保留',reject:'却下'})[decisions[id]] || '未選択'
+    };
+  });
+  if (fmt === 'json') {
+    return JSON.stringify({
+      title: 'Gravity企画用・セックスマシンガンズ特集・選択結果',
+      exportedAt: new Date().toISOString(),
+      summary: {
+        採用: rows.filter(x => x.decision==='adopt').length,
+        保留: rows.filter(x => x.decision==='hold').length,
+        却下: rows.filter(x => x.decision==='reject').length,
+        未選択: rows.filter(x => !x.decision).length
+      },
+      tracks: rows
+    }, null, 2);
+  }
+  const label = {adopt:'【採用】',hold:'【保留】',reject:'【却下】'};
+  const lines = ['Gravity企画用・セックスマシンガンズ特集・選択結果', '---'];
+  ['adopt','hold','reject'].forEach(k => {
+    const list = rows.filter(x => x.decision === k);
+    lines.push(`\n${label[k]} (${list.length})`);
+    list.forEach(x => {
+      const v = x.viewCount != null ? formatViewsExact(x.viewCount) : '再生数不明';
+      lines.push(`${x.rank}. ${x.title} — ${v}` + (x.youtubeUrl ? `\n   ${x.youtubeUrl}` : ''));
+    });
+  });
+  const unset = rows.filter(x => !x.decision);
+  lines.push(`\n【未選択】 (${unset.length})`);
+  unset.forEach(x => lines.push(`${x.rank}. ${x.title}`));
+  return lines.join('\n');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+document.getElementById('btn-export').addEventListener('click', () => {
+  exportFormat = 'json';
+  document.getElementById('export-out').value = buildExport('json');
+  document.getElementById('modal').classList.add('open');
+});
+document.getElementById('fmt-json').addEventListener('click', () => {
+  exportFormat = 'json';
+  document.getElementById('export-out').value = buildExport('json');
+});
+document.getElementById('fmt-text').addEventListener('click', () => {
+  exportFormat = 'text';
+  document.getElementById('export-out').value = buildExport('text');
+});
+document.getElementById('btn-close').addEventListener('click', () => {
+  document.getElementById('modal').classList.remove('open');
+});
+document.getElementById('modal').addEventListener('click', (e) => {
+  if (e.target.id === 'modal') document.getElementById('modal').classList.remove('open');
+});
+document.getElementById('btn-copy').addEventListener('click', async () => {
+  const text = document.getElementById('export-out').value;
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('コピーしました');
+  } catch (e) {
+    document.getElementById('export-out').select();
+    showToast('テキストを選択しました（長押しでコピー）');
+  }
+});
+document.getElementById('btn-reset').addEventListener('click', () => {
+  if (!confirm('すべての採用／保留／却下をリセットしますか？')) return;
+  decisions = {};
+  saveDecisions(decisions);
+  render();
+  showToast('リセットしました');
+});
+
+render();
+</script>
+</body>
+</html>
